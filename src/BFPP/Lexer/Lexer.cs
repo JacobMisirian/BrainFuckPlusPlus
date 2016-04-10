@@ -28,6 +28,8 @@ namespace BFPP.Lexer
                         instruction.JumpPosition = currentJumpPosition--;
                     result.Add(instruction);
                 }
+                else
+                    position++;
             }
 
             return result;
