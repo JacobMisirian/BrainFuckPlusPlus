@@ -63,7 +63,7 @@ namespace BFPP
                                 ;
                         break;
                     case InstructionType.EndStackLoop:
-                        jumpPosition = instructions[pointer].JumpPosition;
+                        jumpPosition = instructions[position].JumpPosition;
                         if (stack.Peek() != 0)
                             while (instructions[--position].JumpPosition != jumpPosition)
                                 ;
