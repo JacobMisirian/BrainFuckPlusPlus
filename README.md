@@ -45,3 +45,65 @@ Print.                |    ```.```   |    Writes to stdout the value of the cell
 Read.                 |    ```,```   |    Reads a single char from stdin and writes this value to to the cell at the cell pointer.  |
 Turn Char Mode On     |    ```c```   |    Turns on character mode, so that the print instruction writes the value of the current cell as an ASCII character.
 Turn Integer Mode On  |    ```i```   |    Turns on integer mode, so that the print instruction writes the value of the current cell literally.
+
+### Cells
+As it said in the description, a cell is a 32 bit integer and BF++
+has an array of cells that are used by the program. The cell pointer
+is the index in this array that is used by instructions to modify or
+read from the current cell.
+
+Each cell starts with an initial value of 0. Take the following program:
+```
+i.
+```
+
+The code starts with an i to set it to integer mode, so it will print the
+literal number value. The main program is just a single print ```.```
+instruction that prints the value of the cell at index 0, the initial
+pointer. Now let's modify the cell:
+```
+i+++.
+```
+
+This increments the initial cell one time with each ```+``` instruction, for
+a total of three, before printing that number to the screen. Take the following:
+```
+i+++.--.++++.
+```
+
+This program prints ```315``` to the screen as it manipulates the initial
+cell using ```+``` and ```-``` to increment and decrement the cell.
+
+Now there are plenty of cells to use, and to access all of them requires the
+use of ```>``` and ```<```, to increment and decrement the cell pointer to
+move around in the array. Take this code:
+```
+i+++.>++.<.>.
+```
+
+This code increments cells[0] (initial cell) three times and prints, increments
+cell[1] twice and prints, prints cell[0], and prints cell[1].
+
+## Loops
+BF++ has two types of while loop, a pointer loop and a stack loop. Both execute
+their code body until either the pointer or the top of stack is equal to 0. Both
+of these loops operate in the same way with the instructions ```[```, ```]```, ```(```, ```)```.
+Here is an example of a pointer loop with square brackets:
+```
+i+++++[-.]
+```
+
+This code prints ```43210```, it starts with ```+++++```, counting to five in
+the initial cell. Then the opening square bracket begins the while loop, which
+subtracts one from the initial cell and prints it. Once the cell value reaches
+0, the while loop ceases to execute and the program terminates.
+
+Stack based loops are similar, here is the same program with a curly brace stack
+loop:
+```
+i+++++}({-}.)
+```
+
+The program increments the cell to five, and pushes that number to the top of
+the stack. From there the loop begins, it pops the value off the top of the
+stack, subtracts it, pushes it back onto the stack, and then prints it to the screen.
